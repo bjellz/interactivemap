@@ -11,20 +11,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; } /* Added overflow: hidden; */
+        /* Grunnleggende styling for alle skjermstørrelser (Desktop First) */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Forhindrer uønsket scrollbar */
+        }
 
         /* --- Login page styling --- */
         .login-container {
-            display: flex; /* Endret til flex for sentrering */
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             width: 100vw;
             background-color: #f4f4f4;
-            position: absolute; /* Sørger for at den dekker hele viewport */
+            position: absolute;
             top: 0;
             left: 0;
-            z-index: 9999; /* Sørger for at den er over alt annet */
+            z-index: 9999;
         }
 
         .login-box {
@@ -82,11 +89,21 @@
             font-size: 0.9em;
         }
 
-        /* --- Existing map and sidebar styling --- */
-        #map { position: absolute; top: 0; left: 0; right: 260px; bottom: 0; }
+        /* --- Map and sidebar styling (Desktop default) --- */
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 260px; /* Leave space for sidebar on desktop */
+            bottom: 0;
+        }
+
         #sidebar {
             position: absolute;
-            top: 0; right: 0; width: 260px; height: 100%;
+            top: 0;
+            right: 0;
+            width: 260px; /* Fixed width on desktop */
+            height: 100%;
             background: #fff;
             box-shadow: -3px 0 8px rgba(0,0,0,0.15);
             padding: 10px;
@@ -95,6 +112,7 @@
             display: flex;
             flex-direction: column;
         }
+
         #sidebar h3 {
             margin-top: 0;
             font-weight: 700;
@@ -134,7 +152,7 @@
             list-style: none;
             padding-left: 0;
             margin-top: 10px;
-            flex-grow: 1; /* Allow list to take available space */
+            flex-grow: 1;
         }
         #layerList li {
             margin-bottom: 10px;
@@ -147,6 +165,7 @@
             background: #f9f9f9;
             transition: background-color 0.2s ease;
             cursor: pointer;
+            font-size: 0.9rem; /* Juster for bedre lesbarhet */
         }
         #layerList li:hover {
             background-color: #e6f4ea;
@@ -161,6 +180,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-left: 8px;
+            font-size: 0.8rem; /* Mindre knapper */
         }
         #layerList li button:hover {
             background: #b71c1c;
@@ -175,7 +195,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            margin-top: auto; /* Push to bottom */
+            margin-top: auto;
             margin-bottom: 10px;
             text-align: center;
             transition: background-color 0.3s ease;
@@ -261,11 +281,11 @@
             background-color: #da190b;
         }
 
-        /* Search bar styling - Plassert øverst til venstre */
+        /* Search bar styling (Desktop default) */
         #searchContainer {
             position: absolute;
             top: 10px;
-            right: 280px;
+            right: 280px; /* Adjust for sidebar */
             left: unset;
             z-index: 1000;
             background: white;
@@ -295,6 +315,107 @@
         }
         #searchContainer button:hover {
             background-color: #0056b3;
+        }
+
+        /* --- Media Queries for Mobile/Tablet --- */
+        @media (max-width: 768px) {
+            /* Generelle justeringer for mindre skjermer */
+            body { font-size: 14px; }
+
+            .login-box {
+                width: 90%; /* Gjør login-boksen bredere på mobil */
+                padding: 20px;
+            }
+
+            /* Kart og sidepanel */
+            #map {
+                right: 0; /* Kartet fyller hele bredden */
+                bottom: 200px; /* La plass til sidepanel nederst */
+            }
+
+            #sidebar {
+                top: auto; /* Fjern top-posisjonering */
+                bottom: 0; /* Fest til bunnen */
+                left: 0; /* Fyll hele bredden */
+                width: 100%; /* Fyll hele bredden */
+                height: 200px; /* Fast høyde for sidepanelet */
+                box-shadow: 0 -3px 8px rgba(0,0,0,0.15); /* Skygge på toppen */
+                padding: 10px;
+                flex-direction: row; /* Arranger innholdet horisontalt i sidepanelet */
+                justify-content: space-around; /* Fordel seksjonene */
+                align-items: flex-start; /* Juster elementer øverst */
+                gap: 10px; /* Mellomrom mellom seksjoner */
+            }
+
+            #sidebar .sidebar-section {
+                flex: 1; /* La seksjonene ta like mye plass */
+                min-width: 120px; /* Minimumsbredde for seksjonene */
+                margin-bottom: 0; /* Fjern bunnmargin */
+                height: 100%; /* La seksjonen fylle sin del av sidepanelet */
+                overflow-y: auto; /* Rulbart innhold i seksjonene */
+            }
+            #sidebar h3 {
+                font-size: 1.1rem;
+                border-bottom: none; /* Fjern kantlinje */
+                padding-bottom: 0;
+            }
+            .filter-buttons {
+                flex-direction: column; /* Knapper vertikalt stablet */
+                align-items: stretch; /* Fyll bredden */
+                gap: 5px;
+            }
+            .filter-buttons button {
+                font-size: 0.8rem;
+                padding: 8px 10px; /* Litt større touch-område */
+            }
+
+            #layerList {
+                font-size: 0.85rem; /* Mindre tekst i lister */
+                flex-grow: 0; /* Ikke strekk listene */
+            }
+            #layerList li {
+                padding: 4px 8px; /* Mindre padding for listeelementer */
+            }
+            #layerList li button {
+                padding: 3px 6px; /* Mindre sletteknapper */
+            }
+            #clearDataBtn {
+                position: absolute; /* Plasser "Tøm data" uavhengig */
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                width: auto; /* Juster bredde */
+                margin: 0;
+            }
+
+            /* Søkefelt for mobil */
+            #searchContainer {
+                top: 10px;
+                left: 10px;
+                right: 10px; /* Fyller hele bredden */
+                width: auto;
+                flex-wrap: wrap; /* Tillat innhold å bryte */
+                justify-content: space-between;
+                padding: 10px;
+            }
+            #searchContainer input {
+                flex-grow: 1; /* Inputfeltet tar mesteparten av plassen */
+                width: auto; /* Fjern fast bredde */
+                margin-right: 5px;
+            }
+            #searchContainer button {
+                width: auto; /* Knapp justerer seg automatisk */
+            }
+
+            /* Modaler på mobil */
+            .modal-content {
+                width: 95%; /* Gjør modalen nesten full bredde */
+                padding: 15px;
+            }
+            .modal-content input[type="text"],
+            .modal-content select {
+                width: calc(100% - 20px); /* Juster bredden litt */
+            }
         }
     </style>
 </head>
@@ -402,21 +523,19 @@
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('errorMessage');
 
-        // Definer gyldig brukernavn og passord
-        // ADVARSEL: Dette er usikkert for produksjon. Kun for demonstrasjon.
         const correctUsername = 'bjellz';
         const correctPassword = 'passord123';
 
         loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Hindrer at skjemaet sendes på vanlig måte
+            event.preventDefault();
 
             const enteredUsername = usernameInput.value;
             const enteredPassword = passwordInput.value;
 
             if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
-                errorMessage.textContent = ''; // Tøm eventuelle feilmeldinger
-                loginPage.style.display = 'none'; // Skjul innloggingssiden
-                mapContainer.style.display = 'block'; // Vis kartcontaineren
+                errorMessage.textContent = '';
+                loginPage.style.display = 'none';
+                mapContainer.style.display = 'block';
                 initializeMapAndData(); // Kall funksjonen som initialiserer kartet
             } else {
                 errorMessage.textContent = 'Feil brukernavn eller passord. Prøv igjen.';
@@ -425,12 +544,11 @@
         // --- SLUTT: LOGIN PAGE JAVASCRIPT ---
 
         // Denne funksjonen vil nå initialisere kartet og all kart-relatert logikk
-        let map; // Deklarer map globalt, men initialiser den i funksjonen
-        let drawnItems; // Deklarer drawnItems globalt
-        let drawControl; // Deklarer drawControl globalt
+        let map;
+        let drawnItems;
+        let drawControl;
 
         function initializeMapAndData() {
-            // Fargealternativer for områder
             const colorOptions = {
                 'Basketpool': { color: '#4CAF50', fillColor: '#A5D6A7', fillOpacity: 0.6 },
                 'Redzone': { color: '#E53935', fillColor: '#EF9A9A', fillOpacity: 0.6 },
@@ -438,10 +556,9 @@
                 'Coring lagring': { color: '#FB8C00', fillColor: '#FFCC80', fillOpacity: 0.6 },
                 'CWI Retur': { color: '#8E24AA', fillColor: '#CE93D8', fillOpacity: 0.6 },
                 'FES lagring': { color: '#00897B', fillColor: '#80CBC4', fillOpacity: 0.6 },
-                'DS Retur': { color: '#E10087B', fillColor: '#FFCC80', fillOpacity: 0.6 } // Merk: Duplikat fargeverdi her, sjekk '#E10087B'
+                'DS Retur': { color: '#E10087B', fillColor: '#FFCC80', fillOpacity: 0.6 }
             };
 
-            // Gjenstandsikoner for markører
             const markerIcons = {
                 'default_marker': L.icon({
                     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -489,16 +606,14 @@
                 })
             };
 
-            // Hjelpefunksjon for å hente ikon basert på navn
             function getMarkerIcon(name) {
                 return markerIcons[name] || markerIcons['default_marker'];
             }
 
-            // For å generere unike IDs
             let shapeIdCounter = 0;
 
             // Initialiser kartet FØRST NÅ
-            map = L.map('map').setView([58.9150, 5.6003], 17.5); // Satt til Gjesdal, Norge
+            map = L.map('map').setView([58.9150, 5.6003], 17.5);
 
             L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
                 attribution: 'Tiles © Esri',
@@ -558,10 +673,6 @@
             const toggleAreasBtn = document.getElementById('toggleAreasBtn');
             const toggleMarkersBtn = document.getElementById('toggleMarkersBtn');
 
-            // ******************************************************
-            // START: KODE FOR GLOBALE SYNLIGHETS-TOGGLES
-            // ******************************************************
-
             toggleAreasBtn.onclick = () => {
                 showAreas = !showAreas;
                 toggleAreasBtn.classList.toggle('active', showAreas);
@@ -575,10 +686,6 @@
                 filterMapLayers();
                 updateSidebar();
             };
-
-            // ******************************************************
-            // SLUTT: KODE FOR GLOBALE SYNLIGHETS-TOGGLES
-            // ******************************************************
 
             let currentAreaFilter = 'Alle';
             let currentMarkerFilter = 'Alle';
@@ -1150,15 +1257,13 @@
                 updateSidebar();
             };
 
-            // Initial setup calls for the map are now inside this function,
-            // so they only run after successful login.
             populateModalOptions();
             setupFilterButtons();
             loadFromLocalStorage();
             updateSidebar();
             filterMapLayers();
 
-            // Sørg for at kartet justerer seg riktig etter at det blir synlig
+            // Veldig viktig for Leaflet at kartet justeres når det blir synlig
             map.invalidateSize();
         }
     </script>
