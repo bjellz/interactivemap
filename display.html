@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="utf-8" />
+    <title>Interaktivt kart (Fremvisning)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Grunnleggende styling for alle skjermstørrelser */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Forhindrer uønsket scrollbar */
+        }
+
+        /* Kartet fyller hele skjermen i fremvisningsmodus */
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0; /* Ingen sidemeny, så fyll hele bredden */
+            bottom: 0;
+        }
+
+        /* Skjul elementer som er unødvendige i fremvisningsmodus */
+        #sidebar, #editModal, .leaflet-draw-toolbar, .leaflet-control-edit {
+            display: none !important;
+        }
+
+        /* Juster søkefeltet for fremvisningsmodus, da det ikke er en sidemeny */
+        #searchContainer {
+            position: absolute;
+            top: 10px;
+            left: 10px; /* Flytt til venstre side */
+            right: 10px; /* Fyll bredden, selv på desktop */
+            z-index: 1000;
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #searchContainer input {
+            border: 1px solid #ccc;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            flex-grow: 1; /* Ta all tilgjengelig plass */
+        }
+        #searchContainer button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+        }
+        #searchContainer button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Ingen spesifikke mobiljusteringer for elementer som er skjult uansett */
+        /* Hvis du ønsker å vise søkefeltet annerledes på mobil for display.html, legg til her */
+        @media (max-width: 768px) {
+             #searchContainer {
+                /* Samme som desktop for display.html, da det er enklere */
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                width: auto;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                padding: 10px;
+            }
+            #searchContainer input {
+                flex-grow: 1;
+                width: auto;
+                margin-right: 5px;
+            }
+            #searchContainer button {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div id="searchContainer">
+        <input type="text" id="searchInput" placeholder="Søk områder/markører...">
+        <button id="searchButton">Søk</button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <script src="map-logic.js"></script>
+    <script>
+        // Kjør initialiseringsfunksjonen for kartet når siden lastes.
+        // `isAdminView` er satt til `false` for å deaktivere redigering/modaler.
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeMapAndData(false); // 'false' betyr at dette er fremvisningsvisning
+        });
+    </script>
+</body>
+</html>
